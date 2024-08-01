@@ -2,24 +2,14 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getIngredientsApi } from '@api';
 import { TIngredient } from '@utils-types';
 
-enum IngredientVariant {
-  Bun = 'bun',
-  Main = 'main',
-  Sauce = 'sauce'
-}
-
 interface IIngredientState {
   isLoading: boolean;
-  buns: TIngredient[];
-  mains: TIngredient[];
-  sauces: TIngredient[];
+  ingredients: TIngredient[];
 }
 
 const defaultState: IIngredientState = {
   isLoading: false,
-  buns: [],
-  mains: [],
-  sauces: []
+  ingredients: []
 };
 
 export const loadIngredientsThunk = createAsyncThunk('ingredient/load', () =>
@@ -36,15 +26,7 @@ export const ingredientSlice = createSlice({
     });
     builder.addCase(loadIngredientsThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.buns = action.payload.filter(
-        (i) => i.type === IngredientVariant.Bun
-      );
-      state.mains = action.payload.filter(
-        (i) => i.type === IngredientVariant.Main
-      );
-      state.sauces = action.payload.filter(
-        (i) => i.type === IngredientVariant.Sauce
-      );
+      state.ingredients = action.payload;
     });
     builder.addCase(loadIngredientsThunk.rejected, (state) => {
       state.isLoading = false;
