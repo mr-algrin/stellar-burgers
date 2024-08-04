@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TIngredient, TOrder } from '@utils-types';
 import { orderBurgerApi } from '@api';
+import uuid4 from 'uuid4';
 
 export type BurgerConstructor = {
   bun: TIngredient | null;
@@ -39,13 +40,45 @@ export const burgerSlice = createSlice({
     addBurgerBun: (state, action: PayloadAction<TIngredient>) => {
       state.burgerConstructor.bun = action.payload;
     },
-    addBurgerIngredient: (state, action: PayloadAction<TIngredient>) => {
-      state.burgerConstructor.ingredients.push(action.payload);
+    addBurgerIngredient: {
+      reducer: (state, action: PayloadAction<TIngredient>) => {
+        state.burgerConstructor.ingredients.push(action.payload);
+      },
+      prepare: (ingredient: TIngredient) => ({
+        payload: { ...ingredient, id: uuid4() }
+      })
     },
     removeIngredient: (state, action: PayloadAction<number>) => {
       const index = action.payload;
       if (index >= 0 && index < state.burgerConstructor.ingredients.length) {
         state.burgerConstructor.ingredients.splice(index, 1);
+      }
+    },
+    ingredientMoveUp: (
+      { burgerConstructor },
+      action: PayloadAction<number>
+    ) => {
+      const index = action.payload;
+      if (index > 0 && index < burgerConstructor.ingredients.length) {
+        const ingredient = { ...burgerConstructor.ingredients[index - 1] };
+        burgerConstructor.ingredients[index - 1] = {
+          ...burgerConstructor.ingredients[index]
+        };
+        burgerConstructor.ingredients[index] = ingredient;
+      }
+    },
+    ingredientMoveDown: (
+      { burgerConstructor },
+      action: PayloadAction<number>
+    ) => {
+      const index = action.payload;
+
+      if (index >= 0 && index < burgerConstructor.ingredients.length - 1) {
+        const ingredient = { ...burgerConstructor.ingredients[index + 1] };
+        burgerConstructor.ingredients[index + 1] = {
+          ...burgerConstructor.ingredients[index]
+        };
+        burgerConstructor.ingredients[index] = ingredient;
       }
     }
   },
@@ -65,9 +98,11 @@ export const burgerSlice = createSlice({
 
 export const {
   initBurger,
+  addBurgerBun,
   addBurgerIngredient,
   removeIngredient,
-  addBurgerBun
+  ingredientMoveUp,
+  ingredientMoveDown
 } = burgerSlice.actions;
 
 export const burgerReducer = burgerSlice.reducer;
