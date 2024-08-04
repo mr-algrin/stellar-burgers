@@ -1,8 +1,9 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Preloader, OrderInfoUI } from '@ui';
-import { TIngredient } from '@utils-types';
+import { TIngredient, TOrder } from '@utils-types';
+import { getOrderByNumberApi } from '@api';
 
 import { useSelector } from '../../services/store';
 
@@ -13,13 +14,21 @@ type TOrderInfoParams = {
 export const OrderInfo: FC = () => {
   const { number } = useParams<TOrderInfoParams>();
   const { ingredients } = useSelector((state) => state.ingredient);
-  const { feeds } = useSelector((state) => state.feed);
+  // const { feeds } = useSelector((state) => state.feed);
+  const [orderData, setOrderData] = useState<TOrder | null>(null);
 
-  const orderData = useMemo(() => {
-    if (!number) return null;
+  useEffect(() => {
+    if (number)
+      getOrderByNumberApi(parseInt(number))
+        .then((res) => res.orders.length > 0 && setOrderData(res.orders[0]))
+        .catch();
+  }, [number]);
 
-    return feeds.find((f) => f.number === parseInt(number));
-  }, [number, feeds]);
+  // const orderData = useMemo(() => {
+  //   if (!number) return null;
+  //
+  //   return feeds.find((f) => f.number === parseInt(number));
+  // }, [number, feeds]);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

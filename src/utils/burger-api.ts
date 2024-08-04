@@ -1,7 +1,17 @@
-import { setCookie, getCookie } from './cookie';
-import { TIngredient, TOrder, TOrdersData, TUser } from './types';
+import { setCookie, getCookie, deleteCookie } from './cookie';
+import { TIngredient, TOrder, TUser } from './types';
 
 const URL = process.env.BURGER_API_URL;
+
+export const saveSession = (auth: TAuthResponse) => {
+  localStorage.setItem('refreshToken', auth.refreshToken);
+  setCookie('accessToken', auth.accessToken);
+};
+
+export const clearSession = () => {
+  localStorage.removeItem('refreshToken');
+  deleteCookie('accessToken');
+};
 
 const checkResponse = <T>(res: Response): Promise<T> =>
   res.ok ? res.json() : res.json().then((err) => Promise.reject(err));

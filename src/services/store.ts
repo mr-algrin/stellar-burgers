@@ -6,12 +6,20 @@ import {
   useSelector as selectorHook
 } from 'react-redux';
 
-import { feedReducer, ingredientReducer, userReducer } from '@slices';
+import {
+  burgerReducer,
+  feedReducer,
+  ingredientReducer,
+  orderReducer,
+  userReducer
+} from '@slices';
 
 const rootReducer = {
+  burger: burgerReducer,
   user: userReducer,
   ingredient: ingredientReducer,
-  feed: feedReducer
+  feed: feedReducer,
+  order: orderReducer
 };
 
 const store = configureStore({

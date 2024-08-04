@@ -1,5 +1,11 @@
-import { useEffect } from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { PropsWithChildren, useEffect } from 'react';
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  Navigate
+} from 'react-router-dom';
 
 import {
   ConstructorPage,
@@ -19,11 +25,19 @@ import {
   OrderInfo,
   ProtectedRoute
 } from '@components';
-import { loadIngredientsThunk } from '@slices';
+import { getUserThunk, loadIngredientsThunk } from '@slices';
 
-import '../../index.css';
 import styles from './app.module.css';
-import { useDispatch } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
+import '../../index.css';
+
+const UnauthorizedRoute = ({ children }: PropsWithChildren) => {
+  const { user } = useSelector((state) => state.user);
+
+  if (user) return <Navigate to={'/profile'} />;
+
+  return children;
+};
 
 const App = () => {
   const navigate = useNavigate();
@@ -35,6 +49,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(loadIngredientsThunk());
+    dispatch(getUserThunk());
   }, []);
 
   return (
@@ -42,11 +57,41 @@ const App = () => {
       <AppHeader />
       <Routes location={previousLocation || location}>
         <Route path={''} element={<ConstructorPage />} />
+        <Route path={'/ingredients/:id'} element={<IngredientDetails />} />
         <Route path={'/feed'} element={<Feed />} />
-        <Route path={'/login'} element={<Login />} />
-        <Route path={'/register'} element={<Register />} />
-        <Route path={'/forgot-password'} element={<ForgotPassword />} />
-        <Route path={'/reset-password'} element={<ResetPassword />} />
+        <Route path={'/feed/:number'} element={<OrderInfo />} />
+        <Route
+          path={'/login'}
+          element={
+            <UnauthorizedRoute>
+              <Login />
+            </UnauthorizedRoute>
+          }
+        />
+        <Route
+          path={'/register'}
+          element={
+            <UnauthorizedRoute>
+              <Register />
+            </UnauthorizedRoute>
+          }
+        />
+        <Route
+          path={'/forgot-password'}
+          element={
+            <UnauthorizedRoute>
+              <ForgotPassword />
+            </UnauthorizedRoute>
+          }
+        />
+        <Route
+          path={'/reset-password'}
+          element={
+            <UnauthorizedRoute>
+              <ResetPassword />
+            </UnauthorizedRoute>
+          }
+        />
         <Route
           path={'/profile'}
           element={
@@ -60,6 +105,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <ProfileOrders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={'/profile/orders/:number'}
+          element={
+            <ProtectedRoute>
+              <OrderInfo />
             </ProtectedRoute>
           }
         />
