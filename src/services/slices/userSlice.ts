@@ -26,12 +26,9 @@ const defaultState: IUserState = {
   error: ''
 };
 
-export const getUserThunk = createAsyncThunk('user/get', () => getUserApi());
+export const getUserThunk = createAsyncThunk('user/get', getUserApi);
 
-export const updateUserThunk = createAsyncThunk(
-  'user/update',
-  (data: Partial<TRegisterData>) => updateUserApi(data)
-);
+export const updateUserThunk = createAsyncThunk('user/update', updateUserApi);
 
 export const registerThunk = createAsyncThunk(
   'user/register',

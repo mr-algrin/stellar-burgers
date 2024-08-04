@@ -16,9 +16,7 @@ const defaultState: IFeedState = {
   totalToday: 0
 };
 
-export const getFeedsThunk = createAsyncThunk('feed/getAll', () =>
-  getFeedsApi()
-);
+export const getFeedsThunk = createAsyncThunk('feed/getAll', getFeedsApi);
 
 export const feedSlice = createSlice({
   name: 'feed',

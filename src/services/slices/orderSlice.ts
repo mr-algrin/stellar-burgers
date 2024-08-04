@@ -12,9 +12,7 @@ const defaultState: IOrderState = {
   isLoading: false
 };
 
-export const getOrdersThunk = createAsyncThunk('order/getAll', () =>
-  getOrdersApi()
-);
+export const getOrdersThunk = createAsyncThunk('order/getAll', getOrdersApi);
 
 export const orderSlice = createSlice({
   name: 'order',

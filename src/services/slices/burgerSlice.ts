@@ -22,9 +22,9 @@ const defaultState: IBurgerState = {
   orderData: null
 };
 
-export const createBurger = createAsyncThunk(
+export const createBurgerThunk = createAsyncThunk(
   'burger/create',
-  (data: Array<string>) => orderBurgerApi(data)
+  orderBurgerApi
 );
 
 export const burgerSlice = createSlice({
@@ -50,14 +50,14 @@ export const burgerSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(createBurger.pending, (state) => {
+    builder.addCase(createBurgerThunk.pending, (state) => {
       state.orderRequest = true;
     });
-    builder.addCase(createBurger.fulfilled, (state, action) => {
+    builder.addCase(createBurgerThunk.fulfilled, (state, action) => {
       state.orderRequest = false;
       state.orderData = action.payload.order;
     });
-    builder.addCase(createBurger.rejected, (state) => {
+    builder.addCase(createBurgerThunk.rejected, (state) => {
       state.orderRequest = false;
     });
   }

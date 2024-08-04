@@ -12,8 +12,9 @@ const defaultState: IIngredientState = {
   ingredients: []
 };
 
-export const loadIngredientsThunk = createAsyncThunk('ingredient/load', () =>
-  getIngredientsApi()
+export const loadIngredientsThunk = createAsyncThunk(
+  'ingredient/load',
+  getIngredientsApi
 );
 
 export const ingredientSlice = createSlice({
