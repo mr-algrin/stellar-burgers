@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { TIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { createBurger, initBurger } from '@slices';
+import { createBurgerThunk, initBurger } from '@slices';
 
 import { useDispatch, useSelector } from '../../services/store';
 
@@ -27,7 +27,7 @@ export const BurgerConstructor: FC = () => {
       burgerConstructor.bun._id,
       ...burgerConstructor.ingredients.map((i) => i._id)
     ];
-    dispatch(createBurger(data));
+    dispatch(createBurgerThunk(data));
   };
 
   const closeOrderModal = () => {

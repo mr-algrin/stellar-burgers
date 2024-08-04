@@ -14,7 +14,6 @@ type TOrderInfoParams = {
 export const OrderInfo: FC = () => {
   const { number } = useParams<TOrderInfoParams>();
   const { ingredients } = useSelector((state) => state.ingredient);
-  // const { feeds } = useSelector((state) => state.feed);
   const [orderData, setOrderData] = useState<TOrder | null>(null);
 
   useEffect(() => {
@@ -23,12 +22,6 @@ export const OrderInfo: FC = () => {
         .then((res) => res.orders.length > 0 && setOrderData(res.orders[0]))
         .catch();
   }, [number]);
-
-  // const orderData = useMemo(() => {
-  //   if (!number) return null;
-  //
-  //   return feeds.find((f) => f.number === parseInt(number));
-  // }, [number, feeds]);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

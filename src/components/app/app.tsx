@@ -1,11 +1,5 @@
-import { PropsWithChildren, useEffect } from 'react';
-import {
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-  Navigate
-} from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import {
   ConstructorPage,
@@ -28,16 +22,8 @@ import {
 import { getUserThunk, loadIngredientsThunk } from '@slices';
 
 import styles from './app.module.css';
-import { useDispatch, useSelector } from '../../services/store';
+import { useDispatch } from '../../services/store';
 import '../../index.css';
-
-const UnauthorizedRoute = ({ children }: PropsWithChildren) => {
-  const { user } = useSelector((state) => state.user);
-
-  if (user) return <Navigate to={'/profile'} />;
-
-  return children;
-};
 
 const App = () => {
   const navigate = useNavigate();
@@ -63,33 +49,33 @@ const App = () => {
         <Route
           path={'/login'}
           element={
-            <UnauthorizedRoute>
+            <ProtectedRoute anonymous>
               <Login />
-            </UnauthorizedRoute>
+            </ProtectedRoute>
           }
         />
         <Route
           path={'/register'}
           element={
-            <UnauthorizedRoute>
+            <ProtectedRoute anonymous>
               <Register />
-            </UnauthorizedRoute>
+            </ProtectedRoute>
           }
         />
         <Route
           path={'/forgot-password'}
           element={
-            <UnauthorizedRoute>
+            <ProtectedRoute anonymous>
               <ForgotPassword />
-            </UnauthorizedRoute>
+            </ProtectedRoute>
           }
         />
         <Route
           path={'/reset-password'}
           element={
-            <UnauthorizedRoute>
+            <ProtectedRoute anonymous>
               <ResetPassword />
-            </UnauthorizedRoute>
+            </ProtectedRoute>
           }
         />
         <Route
