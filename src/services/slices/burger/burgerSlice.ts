@@ -1,7 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TIngredient, TOrder } from '@utils-types';
-import { orderBurgerApi } from '@api';
 import uuid4 from 'uuid4';
+
+import { createBurgerThunk } from './actions';
 
 export type BurgerConstructor = {
   bun: TIngredient | null;
@@ -22,11 +23,6 @@ const defaultState: IBurgerState = {
   orderRequest: false,
   orderData: null
 };
-
-export const createBurgerThunk = createAsyncThunk(
-  'burger/create',
-  orderBurgerApi
-);
 
 export const burgerSlice = createSlice({
   name: 'burger',

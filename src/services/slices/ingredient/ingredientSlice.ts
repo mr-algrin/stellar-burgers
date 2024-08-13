@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getIngredientsApi } from '@api';
+import { createSlice } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
+import { loadIngredientsThunk } from './actions';
 
 interface IIngredientState {
   isLoading: boolean;
@@ -11,11 +11,6 @@ const defaultState: IIngredientState = {
   isLoading: false,
   ingredients: []
 };
-
-export const loadIngredientsThunk = createAsyncThunk(
-  'ingredient/load',
-  getIngredientsApi
-);
 
 export const ingredientSlice = createSlice({
   name: 'ingredient',
