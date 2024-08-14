@@ -9,7 +9,7 @@ import {
   TLoginData,
   TRegisterData,
   updateUserApi
-} from '@api';
+} from '../../../utils/burger-api';
 
 export const getUserThunk = createAsyncThunk('user/get', getUserApi);
 

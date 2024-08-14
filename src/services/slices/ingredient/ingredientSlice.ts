@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
 import { loadIngredientsThunk } from './actions';
 
-interface IIngredientState {
+export interface IIngredientState {
   isLoading: boolean;
   ingredients: TIngredient[];
 }

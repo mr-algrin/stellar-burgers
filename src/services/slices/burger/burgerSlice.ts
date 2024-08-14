@@ -3,13 +3,14 @@ import { TIngredient, TOrder } from '@utils-types';
 import uuid4 from 'uuid4';
 
 import { createBurgerThunk } from './actions';
+import store from '../../store';
 
 export type BurgerConstructor = {
   bun: TIngredient | null;
   ingredients: Array<TIngredient>;
 };
 
-interface IBurgerState {
+export interface IBurgerState {
   burgerConstructor: BurgerConstructor;
   orderRequest: boolean;
   orderData: TOrder | null;
@@ -44,10 +45,16 @@ export const burgerSlice = createSlice({
         payload: { ...ingredient, id: uuid4() }
       })
     },
-    removeIngredient: (state, action: PayloadAction<number>) => {
+    removeIngredient: (
+      { burgerConstructor },
+      action: PayloadAction<number>
+    ) => {
       const index = action.payload;
-      if (index >= 0 && index < state.burgerConstructor.ingredients.length) {
-        state.burgerConstructor.ingredients.splice(index, 1);
+      if (index >= 0 && index < burgerConstructor.ingredients.length) {
+        burgerConstructor.ingredients = [
+          ...burgerConstructor.ingredients.slice(0, index),
+          ...burgerConstructor.ingredients.slice(index + 1)
+        ];
       }
     },
     ingredientMoveUp: (

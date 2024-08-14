@@ -3,7 +3,7 @@ import { TOrder } from '@utils-types';
 
 import { getOrdersThunk } from './actions';
 
-interface IOrderState {
+export interface IOrderState {
   isLoading: boolean;
   orders: Array<TOrder>;
 }

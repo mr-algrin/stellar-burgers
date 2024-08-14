@@ -9,7 +9,7 @@ import {
   getUserThunk
 } from './actions';
 
-interface IUserState {
+export interface IUserState {
   isInit: boolean;
   isLoading: boolean;
   user: TUser | null;
@@ -33,6 +33,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(updateUserThunk.fulfilled, (state, action) => {
       state.user = action.payload.user;
+      state.error = '';
     });
     builder.addCase(updateUserThunk.rejected, (state, action) => {
       state.error = action.error.message || '';
@@ -54,6 +55,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(loginThunk.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.isInit = true;
       state.user = action.payload.user;
     });
     builder.addCase(loginThunk.rejected, (state, action) => {

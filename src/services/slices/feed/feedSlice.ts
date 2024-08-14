@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { getFeedsThunk } from './actions';
 
-interface IFeedState {
+export interface IFeedState {
   isLoading: boolean;
   feeds: Array<TOrder>;
   total: number;
