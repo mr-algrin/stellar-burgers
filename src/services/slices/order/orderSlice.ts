@@ -8,14 +8,14 @@ export interface IOrderState {
   orders: Array<TOrder>;
 }
 
-const defaultState: IOrderState = {
+export const orderInitialState: IOrderState = {
   orders: [],
   isLoading: false
 };
 
 export const orderSlice = createSlice({
   name: 'order',
-  initialState: defaultState,
+  initialState: orderInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getOrdersThunk.pending, (state) => {

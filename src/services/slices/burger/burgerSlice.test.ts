@@ -2,14 +2,14 @@ import { test, expect, describe, jest } from '@jest/globals';
 import { configureStore } from '@reduxjs/toolkit';
 
 import {
-  IBurgerState,
   burgerReducer,
   initBurger,
   addBurgerBun,
   addBurgerIngredient,
   removeIngredient,
   ingredientMoveUp,
-  ingredientMoveDown
+  ingredientMoveDown,
+  burgerInitialState
 } from './burgerSlice';
 import { createBurgerThunk } from './actions';
 
@@ -139,23 +139,14 @@ beforeEach(() => {
 });
 
 describe('Тест burger slice', () => {
-  const initialState: IBurgerState = {
-    burgerConstructor: {
-      bun: null,
-      ingredients: []
-    },
-    orderRequest: false,
-    orderData: null
-  };
-
   test('Тест 1a - обработка начального состояния', () => {
-    expect(store.getState().burger).toEqual(initialState);
+    expect(store.getState().burger).toEqual(burgerInitialState);
   });
 
   test('Тест 1b - инициализация состояния', () => {
     store.dispatch(addBurgerIngredient(ingredients[1]));
     store.dispatch(initBurger());
-    expect(store.getState().burger).toEqual(initialState);
+    expect(store.getState().burger).toEqual(burgerInitialState);
   });
 
   test('Тест 2 - добавление ингредиента булочки', () => {

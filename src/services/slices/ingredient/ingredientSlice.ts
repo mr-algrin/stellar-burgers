@@ -7,14 +7,14 @@ export interface IIngredientState {
   ingredients: TIngredient[];
 }
 
-const defaultState: IIngredientState = {
+export const ingredientInitialState: IIngredientState = {
   isLoading: false,
   ingredients: []
 };
 
 export const ingredientSlice = createSlice({
   name: 'ingredient',
-  initialState: defaultState,
+  initialState: ingredientInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(loadIngredientsThunk.pending, (state) => {

@@ -1,7 +1,7 @@
 import { describe, jest, test } from '@jest/globals';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { IIngredientState, ingredientReducer } from './ingredientSlice';
+import { ingredientInitialState, ingredientReducer } from './ingredientSlice';
 import { loadIngredientsThunk } from './actions';
 
 import { getIngredientsApi } from '../../../utils/burger-api';
@@ -86,14 +86,9 @@ const store = configureStore({
 });
 
 describe('Тест ingredient slice', () => {
-  const initialState: IIngredientState = {
-    isLoading: false,
-    ingredients: []
-  };
-
   test('Тест 1 - начальное состояние', () => {
     const state = store.getState().ingredient;
-    expect(state).toEqual(initialState);
+    expect(state).toEqual(ingredientInitialState);
   });
 
   test('Тест 2 - проверка состояния pending для loadIngredientsThunk', () => {

@@ -1,7 +1,7 @@
 import { describe, test, jest, expect } from '@jest/globals';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { IUserState, userReducer } from './userSlice';
+import { userInitialState, userReducer } from './userSlice';
 import {
   loginThunk,
   registerThunk,
@@ -68,15 +68,8 @@ jest.mock('../../../utils/burger-api');
 );
 
 describe('Тест user slice', () => {
-  const initialState: IUserState = {
-    isInit: false,
-    isLoading: false,
-    user: null,
-    error: ''
-  };
-
   test('Тест 1 - начальное состояние', () => {
-    expect(store.getState().user).toEqual(initialState);
+    expect(store.getState().user).toEqual(userInitialState);
   });
 
   test('Тест 2 - проверка состояния pending для registerThunk', () => {
@@ -150,7 +143,7 @@ describe('Тест user slice', () => {
 
   test('Тест 8 - проверка состояния pending для loginThunk', () => {
     store.dispatch(loginThunk.pending('requestId', testAuthData));
-    const { isInit, isLoading, error } = store.getState().user;
+    const { isLoading, error } = store.getState().user;
     expect(isLoading).toBe(true);
     expect(error).toBe('');
   });

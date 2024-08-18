@@ -42,24 +42,30 @@ const testSauce = {
   image_mobile: 'https://code.s3.yandex.net/react/code/sauce-02-mobile.png'
 };
 
+const constructorRoute = '/';
+
+const constructorElementSelector = '.constructor-element';
+const constructorElementTopSelector = '.constructor-element_pos_top';
+const constructorElementBottomSelector = '.constructor-element_pos_bottom';
+
 beforeEach(() => {
   // Перехват запроса на эндпоинт `api/ingredients` и возврат моковых данных
-  cy.intercept('GET', 'https://norma.nomoreparties.space/api/ingredients', {
+  cy.intercept('GET', '/api/ingredients', {
     fixture: 'ingredients.json'
   }).as('getIngredients');
 
   // Перехват запроса на эндпоинт `api/auth/user` и возврат моковых данных
-  cy.intercept('GET', 'https://norma.nomoreparties.space/api/auth/user', {
+  cy.intercept('GET', '/api/auth/user', {
     fixture: 'user.json'
   }).as('getUser');
 
   // Перехват запроса на эндпоинт `/api/orders` и возврат моковых данных
-  cy.intercept('POST', 'https://norma.nomoreparties.space/api/orders', {
+  cy.intercept('POST', '/api/orders', {
     fixture: 'order.json'
   }).as('createOrder');
 
   // Открытие страницы конструктора
-  cy.visit('http://localhost:4000/');
+  cy.visit(constructorRoute);
   // Ожидаем завершение загрузки пользователя
   cy.wait('@getUser');
   // Ожидаем завершение загрузки ингредиентов
@@ -75,8 +81,8 @@ describe('Тест Constructor Page', () => {
         cy.get('.common_button').click();
       });
     // Проверка что булка есть в конструкторе
-    cy.get('.constructor-element_pos_top').should('contain', testBun.name);
-    cy.get('.constructor-element_pos_bottom').should('contain', testBun.name);
+    cy.get(constructorElementTopSelector).should('contain', testBun.name);
+    cy.get(constructorElementBottomSelector).should('contain', testBun.name);
   });
 
   it('Добавление булки и ингредиентов в конструктор', () => {
@@ -85,8 +91,8 @@ describe('Тест Constructor Page', () => {
       cy.get('.common_button').click();
     });
     // Проверка что булка есть в конструкторе
-    cy.get('.constructor-element_pos_top').should('contain', testBun.name);
-    cy.get('.constructor-element_pos_bottom').should('contain', testBun.name);
+    cy.get(constructorElementTopSelector).should('contain', testBun.name);
+    cy.get(constructorElementBottomSelector).should('contain', testBun.name);
     // Добавление ингредиента и соуса в конструктор
     cy.get(`[data-test-id="main-${testMain._id}"]`).within(() => {
       cy.get('.common_button').click();
@@ -95,7 +101,7 @@ describe('Тест Constructor Page', () => {
       cy.get('.common_button').click();
     });
     // Проверка что ингредиенты добавлены в конструктор
-    cy.get('.constructor-element').should('have.length', 4);
+    cy.get(constructorElementSelector).should('have.length', 4);
   });
 
   it('Открытие модального окна ингредиента', () => {
@@ -135,7 +141,7 @@ describe('Тест Constructor Page', () => {
     });
 
     // Проверяем, что ингредиенты добавлены в конструктор
-    cy.get('.constructor-element').should('have.length', 4);
+    cy.get(constructorElementSelector).should('have.length', 4);
 
     // Нажимаем кнопку «Оформить заказ»
     cy.get('button').contains('Оформить заказ').click();
@@ -152,6 +158,6 @@ describe('Тест Constructor Page', () => {
     cy.get('#modals').should('not.contain.html');
 
     // Проверяем, что конструктор пуст после создания заказа
-    cy.get('.constructor-element').should('have.length', 0);
+    cy.get(constructorElementSelector).should('have.length', 0);
   });
 });

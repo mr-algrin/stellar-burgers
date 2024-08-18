@@ -1,7 +1,7 @@
 import { describe, expect, jest, test } from '@jest/globals';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { IFeedState, feedReducer } from './feedSlice';
+import { feedReducer, feedInitialState } from './feedSlice';
 import { getFeedsThunk } from './actions';
 import { TOrder } from '../../../utils/types';
 import { getFeedsApi } from '../../../utils/burger-api';
@@ -72,16 +72,9 @@ const store = configureStore({
 });
 
 describe('Тест feed slice', () => {
-  const initialState: IFeedState = {
-    isLoading: false,
-    feeds: [],
-    total: 0,
-    totalToday: 0
-  };
-
   test('Тест 1 - начальное состояние', () => {
     const state = store.getState().feed;
-    expect(state).toEqual(initialState);
+    expect(state).toEqual(feedInitialState);
   });
 
   test('Тест 2 - обработка состояния pending для getFeedsThunk', () => {

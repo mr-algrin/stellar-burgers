@@ -16,7 +16,7 @@ export interface IBurgerState {
   orderData: TOrder | null;
 }
 
-const defaultState: IBurgerState = {
+export const burgerInitialState: IBurgerState = {
   burgerConstructor: {
     bun: null,
     ingredients: []
@@ -27,7 +27,7 @@ const defaultState: IBurgerState = {
 
 export const burgerSlice = createSlice({
   name: 'burger',
-  initialState: defaultState,
+  initialState: burgerInitialState,
   reducers: {
     initBurger: (state) => {
       state.burgerConstructor = { bun: null, ingredients: [] };

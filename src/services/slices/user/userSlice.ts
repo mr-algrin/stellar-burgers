@@ -16,7 +16,7 @@ export interface IUserState {
   error: string;
 }
 
-const defaultState: IUserState = {
+export const userInitialState: IUserState = {
   isInit: false,
   isLoading: false,
   user: null,
@@ -25,7 +25,7 @@ const defaultState: IUserState = {
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState: defaultState,
+  initialState: userInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(updateUserThunk.pending, (state) => {

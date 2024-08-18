@@ -1,7 +1,7 @@
 import { describe, expect, jest, test } from '@jest/globals';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { IOrderState, orderReducer } from './orderSlice';
+import { orderInitialState, orderReducer } from './orderSlice';
 import { getOrdersThunk } from './actions';
 
 import { getOrdersApi } from '../../../utils/burger-api';
@@ -40,13 +40,8 @@ const store = configureStore({
 });
 
 describe('Тест order slice', () => {
-  const initialState: IOrderState = {
-    orders: [],
-    isLoading: false
-  };
-
   test('Тест 1 - начальное состояние ', () => {
-    expect(store.getState().order).toEqual(initialState);
+    expect(store.getState().order).toEqual(orderInitialState);
   });
 
   test('Тест 2 - проверка состояния pending для getOrdersThunk', () => {

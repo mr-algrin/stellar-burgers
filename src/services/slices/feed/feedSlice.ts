@@ -9,7 +9,7 @@ export interface IFeedState {
   totalToday: number;
 }
 
-const defaultState: IFeedState = {
+export const feedInitialState: IFeedState = {
   isLoading: false,
   feeds: [],
   total: 0,
@@ -18,7 +18,7 @@ const defaultState: IFeedState = {
 
 export const feedSlice = createSlice({
   name: 'feed',
-  initialState: defaultState,
+  initialState: feedInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getFeedsThunk.pending, (state) => {
