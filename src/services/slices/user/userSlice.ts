@@ -1,60 +1,31 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import {
-  clearSession,
-  getUserApi,
-  loginUserApi,
-  logoutApi,
-  registerUserApi,
-  saveSession,
-  TLoginData,
-  TRegisterData,
-  updateUserApi
-} from '@api';
 
-interface IUserState {
+import {
+  loginThunk,
+  logoutThunk,
+  registerThunk,
+  updateUserThunk,
+  getUserThunk
+} from './actions';
+
+export interface IUserState {
   isInit: boolean;
   isLoading: boolean;
   user: TUser | null;
   error: string;
 }
 
-const defaultState: IUserState = {
+export const userInitialState: IUserState = {
   isInit: false,
   isLoading: false,
   user: null,
   error: ''
 };
 
-export const getUserThunk = createAsyncThunk('user/get', getUserApi);
-
-export const updateUserThunk = createAsyncThunk('user/update', updateUserApi);
-
-export const registerThunk = createAsyncThunk(
-  'user/register',
-  (data: TRegisterData) =>
-    registerUserApi(data).then((res) => {
-      saveSession(res);
-      return res;
-    })
-);
-
-export const loginThunk = createAsyncThunk('user/login', (data: TLoginData) =>
-  loginUserApi(data).then((res) => {
-    saveSession(res);
-    return res;
-  })
-);
-
-export const logoutThunk = createAsyncThunk('user/logout', () =>
-  logoutApi().then(() => {
-    clearSession();
-  })
-);
-
 export const userSlice = createSlice({
   name: 'user',
-  initialState: defaultState,
+  initialState: userInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(updateUserThunk.pending, (state) => {
@@ -62,6 +33,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(updateUserThunk.fulfilled, (state, action) => {
       state.user = action.payload.user;
+      state.error = '';
     });
     builder.addCase(updateUserThunk.rejected, (state, action) => {
       state.error = action.error.message || '';
@@ -83,6 +55,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(loginThunk.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.isInit = true;
       state.user = action.payload.user;
     });
     builder.addCase(loginThunk.rejected, (state, action) => {

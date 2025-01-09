@@ -1,26 +1,24 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
-import { getFeedsApi } from '@api';
+import { getFeedsThunk } from './actions';
 
-interface IFeedState {
+export interface IFeedState {
   isLoading: boolean;
   feeds: Array<TOrder>;
   total: number;
   totalToday: number;
 }
 
-const defaultState: IFeedState = {
+export const feedInitialState: IFeedState = {
   isLoading: false,
   feeds: [],
   total: 0,
   totalToday: 0
 };
 
-export const getFeedsThunk = createAsyncThunk('feed/getAll', getFeedsApi);
-
 export const feedSlice = createSlice({
   name: 'feed',
-  initialState: defaultState,
+  initialState: feedInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getFeedsThunk.pending, (state) => {
